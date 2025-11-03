@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Prev-Matrícula (V3 - Bônus 10 Anos)</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .simulator-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 28px;
+            max-width: 600px;
+            width: 100%;
+            border-top: 5px solid #0033a0;
+        }
+
+        h3 {
+            color: #0033a0;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 24px;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-group label {
+            display: block;
+            font-size: 1em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .contribution-display {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #currentContributionDisplay {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #0033a0;
+        }
+        
+        #currentBonusDisplay {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #fec107;
+            display: block;
+        }
+
+        .results-group, .comparison-group {
+            margin-top: 25px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+
+        .results-group h4, .comparison-group h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #555;
+            font-size: 1.1em;
+        }
+
+        .result-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .result-item span {
+            font-size: 0.9em;
+            color: #666;
+            display: block;
+        }
+        
+        .result-item div {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        #resultWithBonus {
+            background-color: #dff0d8;
+            border: 1px solid #c8e6c9;
+            transform: scale(1.02);
+        }
+        
+        #resultWithBonus div {
+            color: #2e7d32;
+        }
+
+        #bonusGainDisplay {
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #2e7d32;
+            margin-top: 12px;
+        }
+
+        .comparison-group {
+            text-align: center;
+        }
+        
+        .age-comparison {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .age-item {
+            padding: 10px;
+            width: 30%;
+        }
+        
+        .age-item span {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: #555;
+            display: block;
+        }
+        
+        .age-item div {
+            font-size: 1.4em;
+            font-weight: 700;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        #fvCompare18 {
+            color: #2e7d32;
+            background-color: #dff0d8;
+        }
+        
+        #fvCompare30, #fvCompare40 {
+            color: #d9534f;
+            background-color: #f2dede;
+        }
+        
+        /* --- ESTILO PARA O AVISO (DISCLAIMER) --- */
+        .disclaimer {
+            font-size: 0.8em;
+            color: #888;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="simulator-container">
+        <h3>O tempo e o nosso bônus jogam a seu favor</h3>
+
+        <div class="slider-group">
+            <label for="contributionSlider">1. Arraste e simule sua contribuição mensal:</label>
+            <input type="range" id="contributionSlider" min="50" max="1500" value="100" step="10">
+            <div class="contribution-display">
+                <span id="currentContributionDisplay">R$ 100,00</span>
+                <span id="currentBonusDisplay">+ R$ 10,00 Bônus-Aporte BB (nos 10 primeiros anos)</span>
+            </div>
+        </div>
+
+        <div class="results-group">
+            <h4>2. Veja seu resultado aos 60 anos (começando hoje, 18 anos)</h4>
+            
+            <div class="result-item" id="resultNoBonus">
+                <span>Sem o Bônus</span>
+                <div id="fvNoBonus">R$ 680.000,00</div>
+            </div>
+
+            <div class="result-item" id="resultWithBonus">
+                <span>Com Bônus-Aporte BB</span>
+                <div id="fvWithBonus">R$ 748.000,00</div>
+            </div>
+
+            <div id="bonusGainDisplay">(Um ganho de R$ 68.000,00 só com o Bônus!)</div>
+        </div>
+
+        <div class="comparison-group">
+            <h4>3. Veja o custo da procrastinação</h4>
+            <p style="font-size: 0.9em; color: #666;">Seu total acumulado aos 60 anos (poupando o mesmo valor com bônus) se você começar:</p>
+            
+            <div class="age-comparison">
+                <div class="age-item">
+                    <span>Hoje (18 anos)</span>
+                    <div id="fvCompare18">R$ 748.000</div>
+                </div>
+                <div class="age-item">
+                    <span>Aos 30 anos</span>
+                    <div id="fvCompare30">R$ 225.500</div>
+                </div>
+                <div class="age-item">
+                    <span>Aos 40 anos</span>
+                    <div id="fvCompare40">R$ 79.200</div>
+                </div>
+            </div>
+        </div>
+
+        <p class="disclaimer">
+            Simulação meramente ilustrativa. Rentabilidade estimada de 10% ao ano (não é garantia de retorno).
+            O Bônus-Aporte BB de 10% é aplicado apenas nos primeiros 10 anos de contribuição.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- REFERÊNCIAS AOS ELEMENTOS DO HTML ---
+            const slider = document.getElementById('contributionSlider');
+            const contributionDisplay = document.getElementById('currentContributionDisplay');
+            const bonusDisplay = document.getElementById('currentBonusDisplay');
+            const fvNoBonusDisplay = document.getElementById('fvNoBonus');
+            const fvWithBonusDisplay = document.getElementById('fvWithBonus');
+            const bonusGainDisplay = document.getElementById('bonusGainDisplay');
+            const fvCompare18Display = document.getElementById('fvCompare18');
+            const fvCompare30Display = document.getElementById('fvCompare30');
+            const fvCompare40Display = document.getElementById('fvCompare40');
+
+            // --- CONSTANTES FINANCEIRAS ---
+            const annualRate = 0.10;
+            const monthlyRate = annualRate / 12;
+            const retirementAge = 60;
+            const bonusCap = 1000;
+            const bonusPercentage = 0.10;
+            const bonusPeriodMonths = 10 * 12; // 10 anos (120 meses)
+
+            // --- FUNÇÕES DE CÁLCULO ---
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', { 
+                    style: 'currency', 
+                    currency: 'BRL' 
+                }).format(value);
+            }
+
+            // P = Aporte mensal, r = taxa mensal, n = num. de meses
+            function calculateFV(P, r, n) {
+                if (n <= 0) return 0;
+                return P * (Math.pow(1 + r, n) - 1) / r;
+            }
+
+            // --- FUNÇÃO PRINCIPAL (Atualiza a simulação) ---
+            function updateSimulation() {
+                const contribution = parseFloat(slider.value);
+                
+                // 1. Calcula o Bônus
+                const bonusableContribution = Math.min(contribution, bonusCap);
+                const bonus = bonusableContribution * bonusPercentage;
+
+                // 2. Calcula os períodos totais (em meses)
+                const n18 = (retirementAge - 18) * 12; // 42 anos
+                const n30 = (retirementAge - 30) * 12; // 30 anos
+                const n40 = (retirementAge - 40) * 12; // 20 anos
+
+                // 3. Funções de Cálculo Específicas (com lógica de 10 anos)
+                
+                // Calcula o FV total (Contribuição do usuário + Bônus)
+                function getFvWithBonus(totalMonths) {
+                    // O bônus só é pago pelo período de bônus (120 meses)
+                    // mas não pode ser maior que o tempo total de contribuição
+                    const currentBonusPeriod = Math.min(totalMonths, bonusPeriodMonths);
+                    const remainingMonths = totalMonths - currentBonusPeriod;
+
+                    // FV 1: Contribuição do usuário pelo período total
+                    const fv_user = calculateFV(contribution, monthlyRate, totalMonths);
+
+                    // FV 2: Bônus (pago apenas por 120 meses)
+                    const fv_bonus_part = calculateFV(bonus, monthlyRate, currentBonusPeriod);
+                    
+                    // FV 3: O valor do bônus (FV 2) continua rendendo juros
+                    const fv_bonus_grown = fv_bonus_part * Math.pow(1 + monthlyRate, remainingMonths);
+                    
+                    return fv_user + fv_bonus_grown;
+                }
+                
+                // 4. Calcula os Valores Futuros
+                
+                // --- Seção 2 ---
+                const fv18NoBonus = calculateFV(contribution, monthlyRate, n18);
+                const fv18WithBonus = getFvWithBonus(n18);
+                const bonusGain = fv18WithBonus - fv18NoBonus;
+                
+                // --- Seção 3 ---
+                const fv30WithBonus = getFvWithBonus(n30);
+                const fv40WithBonus = getFvWithBonus(n40);
+
+
+                // 5. Atualiza os valores na tela
+                contributionDisplay.textContent = formatCurrency(contribution);
+                bonusDisplay.textContent = `+ ${formatCurrency(bonus)} Bônus-Aporte BB (nos 10 primeiros anos)`;
+                
+                // Atualiza Seção 2
+                fvNoBonusDisplay.textContent = formatCurrency(fv18NoBonus);
+                fvWithBonusDisplay.textContent = formatCurrency(fv18WithBonus);
+                bonusGainDisplay.textContent = `(Um ganho de ${formatCurrency(bonusGain)} só com o Bônus!)`;
+
+                // Atualiza Seção 3
+                fvCompare18Display.textContent = formatCurrency(fv18WithBonus);
+                fvCompare30Display.textContent = formatCurrency(fv30WithBonus);
+                fvCompare40Display.textContent = formatCurrency(fv40WithBonus);
+            }
+
+            // --- EVENT LISTENER ---
+            slider.addEventListener('input', updateSimulation);
+            updateSimulation(); // Carrega os valores iniciais
+        });
+    </script>
+
+</body>
+</html>
