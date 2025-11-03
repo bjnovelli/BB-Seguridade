@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador UniPrev BB</title>
+    <title>UniPrev BB — Simulador Interativo</title>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -12,12 +12,26 @@
             font-family: 'Roboto', sans-serif;
             background-color: #f0f4f8;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
         }
 
+        /* --- TÍTULO PRINCIPAL --- */
+        .main-title {
+            text-align: center;
+            color: #0033a0;
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- CONTAINER PRINCIPAL --- */
         .simulator-container {
             background-color: #ffffff;
             border-radius: 12px;
@@ -159,8 +173,7 @@
             color: #d9534f;
             background-color: #f2dede;
         }
-        
-        /* --- ESTILO PARA O AVISO (DISCLAIMER) --- */
+
         .disclaimer {
             font-size: 0.8em;
             color: #888;
@@ -173,10 +186,7 @@
     </style>
 </head>
 <body>
-       <body>
-    <h2 style="text-align:center; color:#0033a0; margin-bottom:10px;">
-        UNIPREV BB — Simulador Interativo de Previdência
-    </h2>
+    <h1 class="main-title">UniPrev BB — Simulador Interativo de Previdência</h1>
 
     <div class="simulator-container">
         <h3>O tempo e o nosso bônus jogam a seu favor</h3>
@@ -281,59 +291,37 @@
                 const n30 = (retirementAge - 30) * 12; // 30 anos
                 const n40 = (retirementAge - 40) * 12; // 20 anos
 
-                // 3. Funções de Cálculo Específicas (com lógica de 10 anos)
-                
-                // Calcula o FV total (Contribuição do usuário + Bônus)
+                // --- Cálculo com bônus ---
                 function getFvWithBonus(totalMonths) {
-                    // O bônus só é pago pelo período de bônus (120 meses)
-                    // mas não pode ser maior que o tempo total de contribuição
                     const currentBonusPeriod = Math.min(totalMonths, bonusPeriodMonths);
                     const remainingMonths = totalMonths - currentBonusPeriod;
-
-                    // FV 1: Contribuição do usuário pelo período total
                     const fv_user = calculateFV(contribution, monthlyRate, totalMonths);
-
-                    // FV 2: Bônus (pago apenas por 120 meses)
                     const fv_bonus_part = calculateFV(bonus, monthlyRate, currentBonusPeriod);
-                    
-                    // FV 3: O valor do bônus (FV 2) continua rendendo juros
                     const fv_bonus_grown = fv_bonus_part * Math.pow(1 + monthlyRate, remainingMonths);
-                    
                     return fv_user + fv_bonus_grown;
                 }
                 
-                // 4. Calcula os Valores Futuros
-                
-                // --- Seção 2 ---
+                // --- Resultados ---
                 const fv18NoBonus = calculateFV(contribution, monthlyRate, n18);
                 const fv18WithBonus = getFvWithBonus(n18);
                 const bonusGain = fv18WithBonus - fv18NoBonus;
-                
-                // --- Seção 3 ---
                 const fv30WithBonus = getFvWithBonus(n30);
                 const fv40WithBonus = getFvWithBonus(n40);
 
-
-                // 5. Atualiza os valores na tela
+                // --- Atualiza a tela ---
                 contributionDisplay.textContent = formatCurrency(contribution);
                 bonusDisplay.textContent = `+ ${formatCurrency(bonus)} Bônus-Aporte BB (nos 10 primeiros anos)`;
-                
-                // Atualiza Seção 2
                 fvNoBonusDisplay.textContent = formatCurrency(fv18NoBonus);
                 fvWithBonusDisplay.textContent = formatCurrency(fv18WithBonus);
                 bonusGainDisplay.textContent = `(Um ganho de ${formatCurrency(bonusGain)} só com o Bônus!)`;
-
-                // Atualiza Seção 3
                 fvCompare18Display.textContent = formatCurrency(fv18WithBonus);
                 fvCompare30Display.textContent = formatCurrency(fv30WithBonus);
                 fvCompare40Display.textContent = formatCurrency(fv40WithBonus);
             }
 
-            // --- EVENT LISTENER ---
             slider.addEventListener('input', updateSimulation);
-            updateSimulation(); // Carrega os valores iniciais
+            updateSimulation();
         });
     </script>
-
 </body>
 </html>
