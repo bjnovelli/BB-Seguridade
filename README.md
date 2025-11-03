@@ -4,7 +4,7 @@
   ## Simulador UniPrev BB
 🧩 Descrição do Projeto
 
-O Simulador Prev-Matrícula (V3) é uma ferramenta interativa desenvolvida em HTML, CSS e JavaScript puro, criada para demonstrar o impacto do Bônus-Aporte BB de 10% nas contribuições de um plano de previdência, simulando a evolução do investimento até os 60 anos de idade.
+O Simulador  UniPrev BB é uma ferramenta interativa desenvolvida em HTML, CSS e JavaScript puro, criada para demonstrar o impacto do Bônus-Aporte BB de 10% nas contribuições de um plano de previdência, simulando a evolução do investimento até os 60 anos de idade.
 
 O objetivo é mostrar de forma visual e intuitiva como:
 
